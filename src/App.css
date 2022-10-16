@@ -1,0 +1,12 @@
+.App, .App > * {
+    padding: 10px;
+    text-align: center;
+}
+
+.title {
+    background: brown;
+}
+
+.content {
+    background: burlywood;
+}
