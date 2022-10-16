@@ -1,10 +1,14 @@
 .App, .App > * {
     padding: 10px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .title {
     background: brown;
+    width: max-content;
 }
 
 .content {
