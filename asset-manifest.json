@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-axios/static/css/main.91cea71c.css",
+    "main.js": "/react-axios/static/js/main.2df2a153.js",
+    "index.html": "/react-axios/index.html",
+    "main.91cea71c.css.map": "/react-axios/static/css/main.91cea71c.css.map",
+    "main.2df2a153.js.map": "/react-axios/static/js/main.2df2a153.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.91cea71c.css",
+    "static/js/main.2df2a153.js"
+  ]
+}
