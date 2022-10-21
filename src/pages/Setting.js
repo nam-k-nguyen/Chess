@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function Setting() {
   return (
-    <div>Setting</div>
+    <div className='page_container setting_page'>
+        Setting
+    </div>
   )
 }
