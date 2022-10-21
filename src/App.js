@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import io from 'socket.io-client';
+import TestZone from './components/TestZone';
 
 function App() {
   // Set state and constants
@@ -32,12 +33,10 @@ function App() {
 
   return (
     <div className="App">
-      <div className="title"><b>Connection status:</b> {socketConnected ? 'Connected' : 'Disconnected'}</div>
-      <input
-        type="button"
-        className="button"
-        value={socketConnected ? 'Disconnect' : 'Connect'}
-        onClick={handleSocketConnection} />
+      <TestZone
+        socketConnected={socketConnected}
+        handleSocketConnection={handleSocketConnection}
+      />
     </div>
   );
 }
