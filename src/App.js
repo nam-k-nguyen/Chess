@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import io from 'socket.io-client';
 import TestZone from './components/TestZone';
+import Board from './components/Board';
 
 function App() {
   // Set state and constants
@@ -28,6 +29,9 @@ function App() {
     console.log(socketConnected ? socket.disconnect() : socket.connect());
   }
 
+  const handleCellClick = (e) => {
+    socket.emit('cell_click', e.currentTarget.dataset.cell_number, (response) => {
+      console.log(`The server said that we clicked cell ${response}`)
     })
   }
 
@@ -37,6 +41,7 @@ function App() {
         socketConnected={socketConnected}
         handleSocketConnection={handleSocketConnection}
       />
+      <Board handleCellClick={handleCellClick} />
     </div>
   );
 }
