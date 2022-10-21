@@ -3,6 +3,7 @@ import './App.css';
 import io from 'socket.io-client';
 import TestZone from './components/TestZone';
 import Board from './components/Board';
+import { getMoves } from './util';
 
 function App() {
   // Set state and constants
@@ -29,10 +30,25 @@ function App() {
     console.log(socketConnected ? socket.disconnect() : socket.connect());
   }
 
-  const handleCellClick = (e) => {
-    socket.emit('cell_click', e.currentTarget.dataset.cell_number, (response) => {
+  const appHandleCellClick = (e) => {
+    let cell = e.currentTarget;
+    let row = cell.dataset.cell_row
+    let col = cell.dataset.cell_col
+    
+    getMoves('queen', row, col).forEach(move => {
+      toggleCell(move.row, move.col, 'move_cell')
+    })
+    toggleCell(row, col, 'active_cell')
+    
+    socket.emit('cell_click', cell.dataset.cell_number, (response) => {
       console.log(`The server said that we clicked cell ${response}`)
     })
+  }
+
+  const toggleCell = (row, col, className) => {
+    Array
+      .from(document.querySelectorAll(`[data-cell_row="${row}"][data-cell_col="${col}"]`))
+      .forEach(el => el.classList.toggle(className))
   }
 
   return (
@@ -41,7 +57,7 @@ function App() {
         socketConnected={socketConnected}
         handleSocketConnection={handleSocketConnection}
       />
-      <Board handleCellClick={handleCellClick} />
+      <Board appHandleCellClick={appHandleCellClick} />
     </div>
   );
 }
