@@ -51,3 +51,11 @@
     width: 20px;
     height: 20px;  
 }
+
+.active_cell {
+    background: rgb(24, 134, 24) !important;
+}
+
+.move_cell {
+    background: rgb(40, 162, 40) !important;
+}
