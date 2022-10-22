@@ -30,26 +30,6 @@ function App() {
     console.log(socketConnected ? socket.disconnect() : socket.connect());
   }
 
-  const appHandleCellClick = (e) => {
-    let cell = e.currentTarget;
-    let row = cell.dataset.cell_row
-    let col = cell.dataset.cell_col
-    
-    getMoves('queen', row, col).forEach(move => {
-      toggleCell(move.row, move.col, 'move_cell')
-    })
-    toggleCell(row, col, 'active_cell')
-    
-    socket.emit('cell_click', cell.dataset.cell_number, (response) => {
-      console.log(`The server said that we clicked cell ${response}`)
-    })
-  }
-
-  const toggleCell = (row, col, className) => {
-    Array
-      .from(document.querySelectorAll(`[data-cell_row="${row}"][data-cell_col="${col}"]`))
-      .forEach(el => el.classList.toggle(className))
-  }
 
   return (
     <div className="App">

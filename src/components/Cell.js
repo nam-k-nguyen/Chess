@@ -20,6 +20,25 @@ export default function Cell({ content, cellNumber, color, handleCellClick }) {
     default: display = ''; break;
   }
 
+  const handleCellClick = (e) => {
+    let cell = e.currentTarget;
+    let row = cell.dataset.cell_row
+    let col = cell.dataset.cell_col
+    getMoves(cell.dataset.content, row, col).forEach(move => {
+      toggleCell(move.row, move.col, 'move_cell')
+    })
+    if (cell.dataset.content !== '') toggleCell(row, col, 'active_cell')
+    socket.emit('cell_click', cell.dataset.cell_number, (response) => {
+      console.log(`The server said that we clicked cell ${response}`)
+    })
+  }
+
+  const toggleCell = (row, col, className) => {
+    Array
+      .from(document.querySelectorAll(`[data-cell_row="${row}"][data-cell_col="${col}"]`))
+      .forEach(el => el.classList.toggle(className))
+  }
+
   return (
     <div className='cell_container'>
         <div 
