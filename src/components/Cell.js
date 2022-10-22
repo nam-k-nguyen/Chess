@@ -6,9 +6,12 @@ import {
   FaChessQueen as Queen,
   FaChessRook as Rook,
 } from 'react-icons/fa';
-import { getRow, getCol } from '../util';
+import { getRow, getCol, getMoves } from '../util';
+import { useSocket } from '../context/SocketContext';
 
-export default function Cell({ content, cellNumber, color, handleCellClick }) {
+export default function Cell({ content, cellNumber, color }) {
+  const { socket } = useSocket()
+
   let display = ''
   switch (content) {
     case 'bishop': display = <Bishop />; break;
@@ -41,16 +44,17 @@ export default function Cell({ content, cellNumber, color, handleCellClick }) {
 
   return (
     <div className='cell_container'>
-        <div 
-            className='cell' 
-            style={{background: color}} 
-            onClick={handleCellClick}
-            data-cell_number={cellNumber}
-            data-cell_row={getRow(cellNumber)}
-            data-cell_col={getCol(cellNumber)}
-        >
-          {display}
-        </div>
+      <div
+        className='cell'
+        style={{ background: color }}
+        onClick={handleCellClick}
+        data-content={content}
+        data-cell_number={cellNumber}
+        data-cell_row={getRow(cellNumber)}
+        data-cell_col={getCol(cellNumber)}
+      >
+        {display}
+      </div>
     </div>
   )
 }
