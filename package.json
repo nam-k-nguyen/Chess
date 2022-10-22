@@ -16,7 +16,6 @@
     "socket.io-client": "^4.5.3",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://nam-k-nguyen.github.io/react-axios/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
