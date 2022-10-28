@@ -8,6 +8,7 @@ export default function Navbar() {
             <NavLink end to="/matching">Matching</NavLink>
             <NavLink end to="/play">Play</NavLink>
             <NavLink end to="/setting">Setting</NavLink>
+            <NavLink end to="/login">Login</NavLink>
         </nav>
     )
 }
