@@ -6,29 +6,23 @@ import Setting from './pages/Setting';
 import Play from './pages/Play';
 import Login from './pages/Login';
 
-import TestZone from './components/TestZone';
-import Board from './components/Board';
 import Navbar from './components/Navbar';
+import Home from './pages/Home';
 
 function App() {
 
   return (
-    <>
-      <Navbar/>
-
-      <div className="App">
-        <TestZone />
-        <Board />
-      </div>
+    <div className="App">
+      <Navbar />
 
       <Routes>
-        <Route path="/" element={"Home"}/>
-        <Route path="/login" element={<Login />}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/matching" element={<Matching />} />
         <Route path="/play" element={<Play />} />
         <Route path="/setting" element={<Setting />} />
       </Routes>
-    </>
+    </div>
   )
 }
 
