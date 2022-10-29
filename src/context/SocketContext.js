@@ -24,6 +24,9 @@ export default function SocketProvider({ children }) {
     if (!socket) return
     socket.on('connect', () => { setSocketConnected(socket.connected); console.log('Socket connected') })
     socket.on('disconnect', () => { setSocketConnected(socket.connected); console.log('Socket disconnected') })
+    socket.on('update_session_id', (session_id_from_server) => {
+      sessionStorage.setItem('chess_session_id', session_id_from_server);
+    })
   }, [socket])
 
   function toggleSocketConnection() { socketConnected ? socket.disconnect() : socket.connect() }
