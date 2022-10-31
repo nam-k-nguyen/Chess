@@ -90,3 +90,51 @@ export function getMoves(piece, row, col) {
     }
     return moves;
 }
+
+export function getEmptyBoard() {
+    let cell_interface = {
+        index: null,
+        row: null,
+        col: null,
+        coordinate: null,
+        piece: null,
+        pieceColor: null,
+        cellColor: null,
+    }
+    let board = new Array(64)
+    for (let i = 0; i < 64; i++) { board[i] = { ...cell_interface } }
+    board = initBoard(board)
+    return board
+}
+
+export function initBoard(board) {
+    let light = true
+
+    board.forEach((cell, i) => {
+        let index = i + 1
+        let row = rowFromCellIndex(index)
+        let col = colFromCellIndex(index)
+
+        // cell identifier
+        cell.index = index;
+        cell.row = row
+        cell.col = col
+        cell.coordinate = rowColToCoord(row, col)
+        // cell content
+        cell.piece =
+            row === 2 || row === 7 ? 'pawn' :
+            row === 1 || row === 8 ? 
+            col === 1 || col === 8 ? 'rook' :
+            col === 2 || col === 7 ? 'knight' :
+            col === 3 || col === 6 ? 'bishop' :
+            col === 4 ? 'queen' : 'king' : 'none' 
+        cell.pieceColor =
+            row === 1 || row === 2 ? DARK_PIECE :
+            row === 7 || row === 8 ? LIGHT_PIECE : 'none'
+        // cell color
+        cell.cellColor = light ? LIGHT_CELL : DARK_CELL
+
+        light = colFromCellIndex(index) === 8 ? light : !light
+    })
+    return board
+}
