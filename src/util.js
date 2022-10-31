@@ -1,3 +1,5 @@
+import { DARK_CELL, DARK_PIECE, LIGHT_CELL, LIGHT_PIECE } from './const';
+
 // Get a array<int> from 1 to end_num,, increment by 1
 export function createArray(end_num) {
     return Array.from(Array(end_num + 1).keys()).slice(1)
@@ -5,17 +7,22 @@ export function createArray(end_num) {
 
 // Return the row and col the cell belongs to given its number
 export function getNumCoordinate(num) {
-    return getRow(num).toString() + getCol(num).toString();
+    return rowFromCellIndex(num).toString() + colFromCellIndex(num).toString();
 }
 
-// Return the row the cell belongs to given its number
-export function getRow(num) {
-    return Math.ceil(parseInt(num) / 8)
+export function rowFromCellIndex(num) { return Math.ceil(parseInt(num) / 8) }
+export function colFromCellIndex(num) { return (parseInt(num) - 1) % 8 + 1 }
+
+export function rowColToCoord(row, col) {
+    let row_coord = 9 - row
+    let col_coord = String.fromCharCode(96 + col)
+    return row_coord + col_coord;
 }
 
-// Return the col the cell belongs to given its number
-export function getCol(num) {
-    return ((parseInt(num) - 1) % 8 + 1);
+export function coordToRowCol(coord) {
+    let row = 9 - parseInt(coord[0])
+    let col = coord.charCodeAt(1) - 96
+    return { row: row, col: col }
 }
 
 // Return true if the value is inside the array
@@ -35,7 +42,7 @@ export function createArray2(N, elements = '') {
 export function getMoves(piece, row, col) {
     let moves = []
     row = parseInt(row); col = parseInt(col);
-    
+
     if (piece === 'rook') {
         for (let r = 1; r < row; r++) { moves.push({ row: r, col: col }); }
         for (let r = row + 1; r <= 8; r++) { moves.push({ row: r, col: col }); }
@@ -61,20 +68,20 @@ export function getMoves(piece, row, col) {
         moves.push({ row: row - 2, col: col - 1 })
     }
     if (piece === 'pawn') {
-        moves.push({row: row - 2, col: col})
-        moves.push({row: row - 1, col: col})
-        moves.push({row: row + 1, col: col})
-        moves.push({row: row + 2, col: col})
+        moves.push({ row: row - 2, col: col })
+        moves.push({ row: row - 1, col: col })
+        moves.push({ row: row + 1, col: col })
+        moves.push({ row: row + 2, col: col })
     }
     if (piece === 'king') {
-        moves.push({row: row - 1, col: col})
-        moves.push({row: row + 1, col: col})
-        moves.push({row: row - 1, col: col - 1})
-        moves.push({row: row + 1, col: col - 1})
-        moves.push({row: row - 1, col: col + 1})
-        moves.push({row: row + 1, col: col + 1})
-        moves.push({row: row, col: col - 1})
-        moves.push({row: row, col: col + 1})
+        moves.push({ row: row - 1, col: col })
+        moves.push({ row: row + 1, col: col })
+        moves.push({ row: row - 1, col: col - 1 })
+        moves.push({ row: row + 1, col: col - 1 })
+        moves.push({ row: row - 1, col: col + 1 })
+        moves.push({ row: row + 1, col: col + 1 })
+        moves.push({ row: row, col: col - 1 })
+        moves.push({ row: row, col: col + 1 })
     }
     if (piece === 'queen') {
         for (let r = 1; r < row; r++) { moves.push({ row: r, col: col }); }
