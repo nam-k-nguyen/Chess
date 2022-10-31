@@ -6,54 +6,53 @@ import {
   FaChessQueen as Queen,
   FaChessRook as Rook,
 } from 'react-icons/fa';
-import { getRow, getCol, getMoves } from '../util';
+import { getMoves } from '../util';
 import { useSocket } from '../context/SocketContext';
 
-export default function Cell({ content, cellNumber, color }) {
+export default function Cell({ index, row, col, coordinate, piece, pieceColor, cellColor }) {
   const { socket } = useSocket()
 
-  let display = ''
-  switch (content) {
-    case 'bishop': display = <Bishop />; break;
-    case 'king': display = <King />; break;
-    case 'knight': display = <Knight />; break;
-    case 'pawn': display = <Pawn />; break;
-    case 'queen': display = <Queen />; break;
-    case 'rook': display = <Rook />; break;
-    default: display = ''; break;
+  function renderPiece(piece) {
+    let display = ''
+    switch (piece) {
+      case 'bishop': display = <Bishop />; break;
+      case 'king': display = <King />; break;
+      case 'knight': display = <Knight />; break;
+      case 'pawn': display = <Pawn />; break;
+      case 'queen': display = <Queen />; break;
+      case 'rook': display = <Rook />; break;
+      default: display = ''; break;
+    }
+    return display
   }
 
-  const handleCellClick = (e) => {
+  function handleCellClick(e) {
     let cell = e.currentTarget;
-    let row = cell.dataset.cell_row
-    let col = cell.dataset.cell_col
-    getMoves(cell.dataset.content, row, col).forEach(move => {
-      toggleCell(move.row, move.col, 'move_cell')
-    })
-    if (cell.dataset.content !== '') toggleCell(row, col, 'active_cell')
-    socket.emit('cell_click', cell.dataset.cell_number, (response) => {
-      console.log(`The server said that we clicked cell ${response}`)
-    })
+    let row = cell.dataset.row
+    let col = cell.dataset.col
+
+    getMoves(cell.dataset.piece, row, col).forEach(move => { toggleCell(move.row, move.col, 'move_cell') })
+    if (cell.dataset.piece !== 'none') toggleCell(row, col, 'active_cell')
   }
 
-  const toggleCell = (row, col, className) => {
-    Array
-      .from(document.querySelectorAll(`[data-cell_row="${row}"][data-cell_col="${col}"]`))
-      .forEach(el => el.classList.toggle(className))
+  function toggleCell(row, col, className) {
+    let el = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
+    if (el) el.classList.toggle(className)
   }
 
   return (
     <div className='cell_container'>
       <div
         className='cell'
-        style={{ background: color }}
         onClick={handleCellClick}
-        data-content={content}
-        data-cell_number={cellNumber}
-        data-cell_row={getRow(cellNumber)}
-        data-cell_col={getCol(cellNumber)}
+        style={{ background: cellColor, color: pieceColor }}
+        data-piece={piece}
+        data-index={index}
+        data-row={row}
+        data-col={col}
+        date-coordinate={coordinate}
       >
-        {display}
+        {renderPiece(piece)}
       </div>
     </div>
   )
