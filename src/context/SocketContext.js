@@ -7,6 +7,9 @@ export function useSocket() { return useContext(SocketContext) }
 export default function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null)
   const [socketConnected, setSocketConnected] = useState(false)
+  const [inMatch, setInMatch] = useState(false)
+  const [queueing, setQueueing] = useState(false)
+  
   // Establish socket connection
   useEffect(() => {
     const socket_url = {
@@ -38,12 +41,29 @@ export default function SocketProvider({ children }) {
     socket.on('update_session_id', (session_id_from_server) => {
       sessionStorage.setItem('chess_session_id', session_id_from_server);
     })
+    
+    socket.on('enter_match', data => {
+      alert(data)
+      setInMatch(true)
+      setQueueing(false)
+    })
+
   }, [socket])
 
   function toggleSocketConnection() { socketConnected ? socket.disconnect() : socket.connect() }
 
+  const contexts = {
+    socket, 
+    socketConnected, 
+    toggleSocketConnection, 
+    inMatch, 
+    setInMatch,
+    queueing,
+    setQueueing
+  }
+
   return (
-    <SocketContext.Provider value={{ socket, socketConnected, toggleSocketConnection }}>
+    <SocketContext.Provider value={contexts}>
       {children}
     </SocketContext.Provider>
   )
