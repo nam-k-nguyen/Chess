@@ -2,10 +2,14 @@ import React, { useState } from 'react'
 import { useSocket } from '../context/SocketContext'
 
 export default function Matching() {
-  const { socket } = useSocket();
-  const [queueing, setQueueing] = useState(false);
+  const { socket, inMatch, queueing, setQueueing } = useSocket();
+  const [queue, setQueue] = useState([]);
 
   function onQuickMatch() {
+    if (inMatch) {
+      alert('you are already in a match')
+      return
+    }
     const session_id = sessionStorage.getItem('chess_session_id')
     const event_name = queueing ? 'exit_queue' : 'enter_queue'
     console.log('Quick Match')
@@ -13,6 +17,7 @@ export default function Matching() {
       console.log(res);
     })
     socket.emit(event_name, session_id, res => {console.log(res)})
+    socket.emit(event_name, session_id, res => { console.log(res) })
     setQueueing(curr => !curr)
   }
 
