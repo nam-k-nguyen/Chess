@@ -6,11 +6,14 @@ export function useSocket() { return useContext(SocketContext) }
 
 export default function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null)
-  const [socketConnected, setSocketConnected] = useState(false)
   const [inMatch, setInMatch] = useState(false)
   const [queueing, setQueueing] = useState(false)
-  
-  // Establish socket connection
+  const [boardArray, setBoardArray] = useState([])
+  const [socketConnected, setSocketConnected] = useState(false)
+  function toggleSocketConnection() { socketConnected ? socket.disconnect() : socket.connect() }
+
+
+  // ESTABLISH SOCKET CONNECTION
   useEffect(() => {
     const socket_url = {
       production: 'https://nestjs-socket-server-production.up.railway.app/',
@@ -21,9 +24,9 @@ export default function SocketProvider({ children }) {
     setSocket(sk)
   }, [])
 
-  // Update socket connection state when it changes
-  useEffect(() => {
 
+  // SOCKET EVENT LISTENERS
+  useEffect(() => {
     if (!socket) return
 
     socket.on('connect', () => {
@@ -41,25 +44,21 @@ export default function SocketProvider({ children }) {
     socket.on('update_session_id', (session_id_from_server) => {
       sessionStorage.setItem('chess_session_id', session_id_from_server);
     })
-    
-    socket.on('enter_match', data => {
-      alert(data)
+
+    socket.on('enter_match', board => {
       setInMatch(true)
       setQueueing(false)
+      setBoardArray(board)
     })
-
   }, [socket])
 
-  function toggleSocketConnection() { socketConnected ? socket.disconnect() : socket.connect() }
-
   const contexts = {
-    socket, 
-    socketConnected, 
-    toggleSocketConnection, 
-    inMatch, 
-    setInMatch,
-    queueing,
-    setQueueing
+    socket,
+    socketConnected,
+    toggleSocketConnection,
+    inMatch, setInMatch,
+    queueing, setQueueing,
+    boardArray, setBoardArray
   }
 
   return (
