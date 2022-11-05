@@ -22,13 +22,16 @@ export function coordToRowCol(coord) {
 }
 export function rowFromCellIndex(num) { return Math.ceil(parseInt(num) / 8) }
 export function colFromCellIndex(num) { return (parseInt(num) - 1) % 8 + 1 }
-
+export function rowColToIndex(row, col) { return (parseInt(row) - 1) * 8 + parseInt(col) - 1}
 
 
 // CELL UTILTITY
 export function toggleCellClass(row, col, className) {
     let el = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
     if (el) el.classList.toggle(className)
+}
+export function toggleMultipleCellClass(cellRowCol, className) {
+    cellRowCol.forEach(cell => {toggleCellClass(cell.row, cell.col, className)})
 }
 export function renderPiece(piece) {
     let display = ''
@@ -47,7 +50,7 @@ export function renderPiece(piece) {
 
 
 // GET POSSIBLE MOVES
-export function getMoves(piece, row, col) {
+export function getPossibleMoves(piece, row, col) {
     let moves = []
     row = parseInt(row); col = parseInt(col);
 
@@ -103,5 +106,10 @@ export function getMoves(piece, row, col) {
             moves.push({ row: row + i, col: col + i })
         }
     }
-    return moves;
+    return moves.filter(move => {
+        return (
+            move.row <= 8 && move.row >= 0 &&
+            move.col <= 8 && move.col >= 0
+        )
+    });
 }
