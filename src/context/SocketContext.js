@@ -48,6 +48,10 @@ export default function SocketProvider({ children }) {
     socket.on('enter_match', board => {
       setInMatch(true)
       setQueueing(false)
+      setBoardArray(board)  
+    })
+
+    socket.on('update_board', board => {
       setBoardArray(board)
     })
   }, [socket])
