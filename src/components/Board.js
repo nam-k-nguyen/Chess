@@ -6,6 +6,11 @@ import { getPossibleMoves, getSessionID, toggleCellClass, toggleMultipleCellClas
 export default function Board() {
 	const { socket, boardArray } = useSocket()
 	const [prevIndex, setPrevIndex] = useState(null)
+	const DARK_CELL = '#B58763'
+	const LIGHT_CELL = '#F0DAB5'
+	const DARK_PIECE = '#1e1e1f'
+	const LIGHT_PIECE = '#ffffff'
+
 	function toggleHighlight(index) {
 		// const piece = boardArray[index].piece
 		const row = boardArray[index].row
@@ -42,8 +47,8 @@ export default function Board() {
 					col={cell.col}
 					coordinate={cell.coordinate}
 					piece={cell.piece}
-					pieceColor={cell.pieceColor}
-					cellColor={cell.cellColor}
+					pieceColor={cell.pieceColor === 'white' ? LIGHT_PIECE : DARK_PIECE}
+					cellColor={cell.cellColor === 'white' ? LIGHT_CELL : DARK_CELL}
 					handleCellClick={handleCellClick}
 				/>
 			})}
