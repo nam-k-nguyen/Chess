@@ -25,6 +25,7 @@ export function colFromCellIndex(num) { return (parseInt(num) - 1) % 8 + 1 }
 export function rowColToIndex(row, col) { return (parseInt(row) - 1) * 8 + parseInt(col) - 1}
 
 
+
 // CELL UTILTITY
 export function toggleCellClass(row, col, className) {
     let el = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
@@ -47,3 +48,7 @@ export function renderPiece(piece) {
     return display
 }
 
+// OTHERS
+export function getSessionID() {
+    return sessionStorage.getItem('chess_session_id')
+}
