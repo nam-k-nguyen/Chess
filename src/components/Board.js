@@ -33,9 +33,19 @@ export default function Board() {
 	function handleCellClick(e) {
 		let cell = e.currentTarget;
 		const currIndex = cell.dataset.index
+		const currRow = cell.dataset.row
 		const cellHasPiece = cell.dataset.piece !== 'none'
 		if (prevIndex) {
-			const data = { move: { src: prevIndex, dest: currIndex }, session_id: getSessionID() }
+			const prevPiece = boardArray[prevIndex].piece
+			const data = {
+				move: { 
+					src: prevIndex, 
+					dest: currIndex, 
+					promotion: prevPiece === 'pawn' && (parseInt(currRow) === 8 || parseInt(currRow)) === 1 ? 'queen' : ' '
+				},
+				session_id: getSessionID(),
+			}
+			// verify move on server. If it's a valid move, server with emit back update_board
 			socket.emit('verify_move', data, res => { console.log(res) })
 			clearAllHighlight()
 			setPrevIndex(null)
