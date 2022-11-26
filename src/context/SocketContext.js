@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { io } from 'socket.io-client';
+import { clearAllHighlight } from '../util';
 
 const SocketContext = React.createContext();
 export function useSocket() { return useContext(SocketContext) }
@@ -53,6 +54,7 @@ export default function SocketProvider({ children }) {
 
     socket.on('update_board', board => {
       setBoardArray(board)
+      clearAllHighlight()
     })
   }, [socket])
 
