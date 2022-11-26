@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import Cell from './Cell';
 import { useSocket } from '../context/SocketContext';
-import { getPossibleMoves, getSessionID, toggleCellClass, toggleMultipleCellClass } from '../util';
+import { 
+	getSessionID, 
+	clearAllHighlight,
+	addCellClass,
+	addCellsClass,
+} from '../util';
 
 export default function Board() {
 	const { socket, boardArray } = useSocket()
@@ -11,13 +16,17 @@ export default function Board() {
 	const DARK_PIECE = '#1e1e1f'
 	const LIGHT_PIECE = '#ffffff'
 
-	function toggleHighlight(index) {
-		// const piece = boardArray[index].piece
+	function addHighlight(index) {
 		const row = boardArray[index].row
 		const col = boardArray[index].col
-		socket.emit('get_possible_moves', {board: boardArray, index: index}, (possible_moves) => {
-			toggleMultipleCellClass(possible_moves, 'move_cell')
-			toggleCellClass(row, col, 'active_cell')
+		const data = {
+			move: { src: index },
+			session_id: getSessionID()
+		}
+		socket.emit('get_possible_moves', data, (possible_moves) => {
+			console.log(possible_moves)
+			addCellsClass(possible_moves, 'move_cell')
+			addCellClass(row, col, 'active_cell')
 		})
 	}
 
@@ -28,11 +37,11 @@ export default function Board() {
 		if (prevIndex) {
 			const data = { move: { src: prevIndex, dest: currIndex }, session_id: getSessionID() }
 			socket.emit('verify_move', data, res => { console.log(res) })
-			toggleHighlight(prevIndex)
+			clearAllHighlight()
 			setPrevIndex(null)
 		}
 		else if (cellHasPiece) {
-			toggleHighlight(currIndex)
+			addHighlight(currIndex)
 			setPrevIndex(currIndex)
 		}
 	}
