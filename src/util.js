@@ -54,6 +54,17 @@ export function renderPiece(piece) {
     }
     return display
 }
+export function clearAllHighlight() {
+    const classToClear = ['move_cell', 'active_cell']
+    classToClear.forEach(className => {
+        let allCells = document.querySelectorAll(`.${className}`)
+        allCells.forEach(cell => {
+            removeCellClass(cell.dataset.row, cell.dataset.col, className)
+        })
+    })
+}
+
+
 
 // OTHERS
 export function getSessionID() {
