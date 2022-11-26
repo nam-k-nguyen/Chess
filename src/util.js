@@ -27,12 +27,19 @@ export function rowColToIndex(row, col) { return (parseInt(row) - 1) * 8 + parse
 
 
 // CELL UTILTITY
-export function toggleCellClass(row, col, className) {
-    let el = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
-    if (el) el.classList.toggle(className)
+export function addCellClass(row, col, className) {
+    let element = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
+    if (element) element.classList.add(className)
 }
-export function toggleMultipleCellClass(cellRowCol, className) {
-    cellRowCol.forEach(cell => {toggleCellClass(cell.row, cell.col, className)})
+export function removeCellClass(row, col, className) {
+    let element = document.querySelector(`[data-row="${row}"][data-col="${col}"]`)
+    if (element) element.classList.remove(className)
+}
+export function addCellsClass(cells, className) {
+    cells.forEach(cell => { addCellClass(cell.row, cell.col, className) })
+}
+export function removeCellsClass(cells, className) {
+    cells.forEach(cell => { removeCellClass(cell.row, cell.col, className) })
 }
 export function renderPiece(piece) {
     let display = ''
